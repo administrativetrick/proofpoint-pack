@@ -1,0 +1,48 @@
+output: default
+groups: {}
+asyncFuncTimeout: 1000
+functions:
+  - id: eval
+    filter: "true"
+    disabled: null
+    conf:
+      add:
+        - name: index
+          value: "'email'"
+        - name: sourcetype
+          value: "'email:proofpoint:tap'"
+  - id: serde
+    filter: "true"
+    disabled: null
+    conf:
+      mode: reserialize
+      type: json
+      srcField: _raw
+      fieldFilterExpr: value !== null
+      remove:
+        - messagesBlocked.0.cluster
+        - messagesBlocked.0.malwareScore
+        - messagesBlocked.0.impostorScore
+        - messagesBlocked.0.id
+        - messagesBlocked.0.QID
+        - messagesBlocked.0.quarantineFolder
+        - messagesBlocked.0.quarantineRule
+        - messagesBlocked.0.spamScore
+      keep:
+        - completelyRewritten
+        - fromAddress
+        - GUID
+        - headerFrom
+        - messageID
+        - messageParts
+        - messageSize
+        - messageTime
+        - modulesRun
+        - policyRoutes
+        - recipient
+        - sender
+        - senderIP
+        - subject
+        - threatType
+        - threatUrl
+        - toAddresses
